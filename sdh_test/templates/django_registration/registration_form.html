@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<script type="text/javascript" src="{% static 'js/register/register.js' %}"> </script>
+<h1>Registration</h1>
+<form method="post" action="" id="ajaxform-user-register">
+{% csrf_token %}
+<dl class="register">
+{% for field in form %}
+    <dt>{{ field.label_tag }}</dt>
+    <dd class="clearfix">{{ field }}
+
+    {% if field.errors %}<div class="user_register-error">{{ field.errors }}</div>{% endif %}
+    </dd>
+{% endfor %}
+</dl>
+<input type="submit" value="Register" / class="clearfix">
+</form>
+{% endblock %}
