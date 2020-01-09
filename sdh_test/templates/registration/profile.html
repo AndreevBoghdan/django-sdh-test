@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<h1>{{ user_profile }}</h1>
+<div>
+	{% if user_profile.inviter %}
+	<label>Invited by {{ user_profile.inviter }}</label>	
+	{% endif %}
+</div>
+
+<div>
+{% if user_referals %}
+	<h3>Users invited by {{ request.user.username }}:</h3>
+
+    <ul>
+        {% for referal in user_referals %}
+            <li>{{ referal }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+<h4>{{ request.user.username }} has no invited users</h4>
+{% endif %}
+</div>
+
+
+<script type="text/javascript" src="{% static 'js/register/profile.js' %}"> </script>
+<div>
+	<label>Invitation code:</label>
+	<span><input id="invitation_code" type="invitation_code" name="invitation_code" value="{{ user_profile.invitation_code }}" readonly></span>
+	{% csrf_token %}
+	<button id="generate_new_code">Generate invitation code</button>
+</div>
+
+<div>
+    <a href="{% url 'logout' %}">logout</a>
+</div>
+{% endblock %}
+

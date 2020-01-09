@@ -153,3 +153,5 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'sdh.test.08.01.2020@gmail.com'
 
 USERS_WITHOUT_CODE = 5
+
+LOGIN_REDIRECT_URL = '/registration/profile/'
