@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<h1>TOP 10</h1>
+
+<table style="width:40%">
+	<tr>
+		<th>Number</th>
+		<th>User</th>
+		<th>Points</th>
+	</tr>
+{% for profile in top_ten %}
+  <tr>
+  	<th>{{ forloop.counter }}</th>
+    <th>{{ profile.user }}</th>
+    <th>{{ profile.points }}</th>
+    
+  </tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+

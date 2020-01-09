@@ -10,13 +10,18 @@ urlpatterns = [
         name="registration_activate",
     ),
     path(
-    	"profile/",
-    	views.profile,
-    	name="user_profile"
+        "profile/",
+        views.profile,
+        name="user_profile"
     ),
     path(
-    	"generate_new_code/",
-    	views.generate_new_code,
-    	name="generate_invitation_code"
+        "generate_new_code/",
+        views.generate_new_code,
+        name="generate_invitation_code"
+    ),
+    path(
+        "rating/",
+        views.rating,
+        name="raiting"
     )
 ]
