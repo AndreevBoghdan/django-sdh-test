@@ -4,3 +4,10 @@
 2) проект Django в папке sdh_test
 использовал virtualenv, установленные пакеты - в requrements.txt
 БД - дефолтная sqlite
+
+
+virtualenv -p python3 .env
+source .env/bin/activate
+pip install -r sdh_test/requirements.txt
+make migrations
+make run
