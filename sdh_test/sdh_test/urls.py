@@ -19,10 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-import register
+from .views import main
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
+    path('', main),
     path('admin/', admin.site.urls),
     path('registration/', include('register.urls')),
     path('accounts/', include('django_registration.backends.activation.urls')),

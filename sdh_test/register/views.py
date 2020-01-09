@@ -14,6 +14,9 @@ from .models import Profile
 from .forms import UserForm
 from .utils import generate_invitation_code
 
+from . import signals #noqa
+from . import receivers #noqa
+
 from django_registration.backends.activation.views import RegistrationView, ActivationView
 
 # Create your views here.
@@ -31,8 +34,10 @@ class SdhRegistrationView(RegistrationView):
             new_user.is_active = False
             new_user.save()
             inviter_profile = Profile.objects.filter(invitation_code=form.cleaned_data['invitation_code']).first()
-            #raise ValidationError( form.cleaned_data['invitation_code'] )
-            new_profile = Profile.objects.create(user=new_user, inviter=inviter_profile.user)
+            if inviter_profile:
+               new_profile = new_user.profile
+               new_profile.inviter = inviter_profile.user
+               new_profile.save()
             self.send_activation_email(new_user)
             if request.is_ajax():
                 return HttpResponse("OK")
@@ -49,6 +54,7 @@ class SdhActivationView(ActivationView):
         user = self.get_user(username)
         user.is_active = True
         user.save()
+        signals.user_activated.send(sender=User, instance=user)
         login(self.request, user)
         return user
 
@@ -58,7 +64,7 @@ def profile(request):
     user = request.user
     profile = user.profile
     args['user_profile'] = profile
-    args['user_referals'] = Profile.objects.filter(inviter=user)
+    args['user_referals'] = user.referals.filter(user__is_active=True)
     return render(request, 'registration/profile.html', args)
 
 @login_required
@@ -67,5 +73,3 @@ def generate_new_code(request):
     profile.invitation_code = generate_invitation_code()
     profile.save()
     return HttpResponse(json_dumps({"new_code": profile.invitation_code}))
-
-#utils
